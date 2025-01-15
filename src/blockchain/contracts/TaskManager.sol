@@ -109,8 +109,8 @@ contract TaskManager {
         return taskId > 0 && taskId <= taskCount;
     }
 
-    function acceptTask(uint taskId) external payable existingTask(taskId) {
-        Task storage task = tasks[taskId];
+    function acceptTask(uint _taskId) external payable existingTask(_taskId) {
+        Task storage task = tasks[_taskId];
 
         require(task.executor == address(0), "TaskManager.acceptTask: Task already accepted");
         require(msg.sender != task.owner, "TaskManager.acceptTask: Task owner cannot accept their own task");
@@ -118,7 +118,7 @@ contract TaskManager {
         // Призначення виконавця
         task.executor = msg.sender;
 
-        emit TaskAssigned(taskId, msg.sender);
+        emit TaskAssigned(_taskId, msg.sender);
     }
 
     function getContractBalance() public view returns (uint256) {

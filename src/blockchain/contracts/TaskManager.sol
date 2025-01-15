@@ -34,7 +34,7 @@ contract TaskManager {
         require(taskExists(_taskId), "TaskManager.acceptTask: Task does not exist");
     }
 
-    function createTask(string calldata _description, uint _budget, uint _endDate) external {
+    function createTask(string calldata _description, uint _budget, uint _endDate) external payable {
         require(bytes(_description).length > 0, "TaskManager.createTask: description should not be empty!");
         require(_budget > 0, "TaskManager.createTask: budget should be greater then 0!");
         require(_endDate > block.timestamp, "TaskManager.createTask: endDate must be in the future!");
@@ -79,7 +79,7 @@ contract TaskManager {
     }
 
     function getTask(uint _taskId) public view existingTask(_taskId) returns (address owner, string memory description,
-        uint256 budget, uint256 endDate, address executor, bool isCompleted) {
+        uint256 budget, uint256 endDate, address executor, bool isCompleted, bool isConfirmed) {
 
         Task memory task = tasks[_taskId];
 
@@ -109,7 +109,7 @@ contract TaskManager {
         return taskId > 0 && taskId <= taskCount;
     }
 
-    function acceptTask(uint taskId) external payable existingTask(_taskId) {
+    function acceptTask(uint taskId) external payable existingTask(taskId) {
         Task storage task = tasks[taskId];
 
         require(task.executor == address(0), "TaskManager.acceptTask: Task already accepted");
@@ -126,7 +126,7 @@ contract TaskManager {
     }
 
     function confirmTaskCompletion(uint _taskId) external {
-        Task memory task = tasks[_taskId];
+        Task storage task = tasks[_taskId];
 
         require(taskExists(_taskId), "TaskManager.confirmTaskCompletion: Task doesn't exists");
         require(msg.sender == task.owner, "TaskManager.confirmTaskCompletion: Task does not exist");

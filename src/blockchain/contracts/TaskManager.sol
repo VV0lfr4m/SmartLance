@@ -30,7 +30,6 @@ contract TaskManager {
 
     mapping(uint => Task) private tasks;
     uint private taskCount;
-    address private arbitrationManager;
 
     constructor() {
     }
@@ -153,7 +152,6 @@ contract TaskManager {
         );
         require(!task.isInArbitration, "TaskManager: Task already in arbitration");
 
-        arbitrationManager = _arbiter;
         (bool success,) = address(_arbiter).call{value : task.budget}(
             abi.encodeWithSignature(
                 "initializeArbitration(uint256,address,address,uint256,address)",
@@ -171,19 +169,12 @@ contract TaskManager {
     }
 
 
-    modifier onlyArbitrationManager() {
-        require(msg.sender == arbitrationManager, "TaskManager.onlyArbitrationManager: Only ArbitrationManager can call this function");
-        _;
-    }
-
     //this function is listening Arbitration events of resolving or finalization
-    function completeArbitration(uint _taskId) external onlyArbitrationManager {
+    function completeArbitration(uint _taskId) external {
         Task storage task = tasks[_taskId];
         require(task.isInArbitration, "TaskManager: Task is not in arbitration");
 
         task.isInArbitration = false;
-        arbitrationManager = address(0);
-
     }
 
 

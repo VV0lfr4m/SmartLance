@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
+import "./TaskManager.sol";
 
 contract ArbitrationManager {
     address private taskManagerAddress;
@@ -71,11 +72,8 @@ contract ArbitrationManager {
 
         payable(_winner).transfer(arb.budget);
 
-        (bool successComplete,) = taskManagerAddress.call(
-            abi.encodeWithSignature("completeArbitration(uint256)", _taskId)
-        );
-        require(successComplete, "ArbitrationManager.resolveArbitration: TaskManager.completeArbitration failed");
 
+        TaskManager(taskManagerAddress).completeArbitration(_taskId);
         emit ArbitrationResolved(_taskId, _winner, arb.budget);
     }
 

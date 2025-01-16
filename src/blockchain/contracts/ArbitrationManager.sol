@@ -2,9 +2,13 @@
 pragma solidity ^0.8.0;
 
 contract ArbitrationManager {
-    constructor() payable{
+    address private taskManagerAddress;
 
+    constructor(address _taskManagerAddress) payable {
+        require(_taskManagerAddress != address(0), "ArbitrationManager: Invalid TaskManager address");
+        taskManagerAddress = _taskManagerAddress;
     }
+
     struct Arbitration {
         uint taskId;
         address owner;
@@ -21,6 +25,7 @@ contract ArbitrationManager {
 
     event ArbitrationInitiated(uint indexed arbitrationId, uint indexed taskId, address indexed arbiter);
     event ArbitrationResolved(uint indexed arbitrationId, address indexed winner, uint amount);
+    event ArbitrationFinalized(uint indexed taskId);
 
     modifier onlyParticipant(uint _taskId) {
         Arbitration memory arbitration = arbitrations[_taskId];
@@ -33,18 +38,22 @@ contract ArbitrationManager {
         require(msg.sender == arbitration.arbiter, "ArbitrationManager.onlyArbiter: Only arbiter can proceed");
         _;
     }
+    modifier onlyTaskManager() {
+        require(msg.sender == taskManagerAddress, "TaskManager.onlyTaskManager: Only TaskManager can call this function");
+        _;
+    }
 
-    function initializeArbitration(uint _taskId, address _owner, address _executor, uint _budget, address _arbiter) external  {
+    function initializeArbitration(uint _taskId, address _owner, address _executor, uint _budget, address _arbiter) external payable onlyTaskManager {
         Arbitration storage arb = arbitrations[_taskId];
-        require(msg.sender == _owner || msg.sender == _executor, "ArbitrationManager.initializeArbitration: Only participants can initiate arbitration");
         require(arb.taskId == 0, "ArbitrationManager.initializeArbitration: Arbitration already exists");
         require(_arbiter != address(0), "ArbitrationManager.initializeArbitration: Invalid arbiter address");
+        require(msg.value == _budget, "ArbitrationManager.initializeArbitration: Incorrect amount sent");
 
         arb.taskId = _taskId;
         arb.owner = _owner;
         arb.executor = _executor;
         arb.arbiter = _arbiter;
-        arb.budget = _budget;
+        arb.budget = msg.value;
         arb.resolved = false;
         arb.winner = address(0);
 
@@ -56,15 +65,27 @@ contract ArbitrationManager {
         Arbitration storage arb = arbitrations[_taskId];
         require(arb.taskId != 0, "ArbitrationManager.resolveArbitration: Arbitration does not exist");
         require(!arb.resolved, "ArbitrationManager.resolveArbitration: Arbitration already resolved");
-        require(_winner == arb.winner || _winner == arb.executor, "ArbitrationManager.resolveArbitration: Winner must be owner or executor");
+        require(_winner == arb.owner || _winner == arb.executor, "ArbitrationManager.resolveArbitration: Winner must be owner or executor");
         arb.winner = _winner;
         arb.resolved = true;
 
-        // Передача коштів переможцю
-        //todo create correct communication between managers
         payable(_winner).transfer(arb.budget);
 
+        (bool successComplete,) = taskManagerAddress.call(
+            abi.encodeWithSignature("completeArbitration(uint256)", _taskId)
+        );
+        require(successComplete, "ArbitrationManager.resolveArbitration: TaskManager.completeArbitration failed");
+
         emit ArbitrationResolved(_taskId, _winner, arb.budget);
+    }
+
+    function finalizeArbitration(uint _taskId) external onlyArbiter(_taskId) {
+        Arbitration storage arb = arbitrations[_taskId];
+        require(arb.resolved, "ArbitrationManager.finalizeArbitration: Arbitration not resolved yet");
+
+        delete arbitrations[_taskId];
+
+        emit ArbitrationFinalized(_taskId);
     }
 
     function getArbitration(uint _taskId) external view returns (
@@ -94,7 +115,7 @@ contract ArbitrationManager {
         return arbitrations[_taskId].taskId != 0 && !arbitrations[_taskId].resolved;
     }
 
-    function getBalance() public view returns(uint) {
+    function getBalance() public view returns (uint) {
         return address(this).balance;
     }
 

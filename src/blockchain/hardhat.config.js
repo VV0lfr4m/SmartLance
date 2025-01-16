@@ -1,4 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
+require('solidity-coverage');
+require("@nomiclabs/hardhat-ethers");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

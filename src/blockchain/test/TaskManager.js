@@ -11,11 +11,9 @@ describe("TaskManager", () => {
 
     beforeEach(async () => {
         [owner, executor] = await ethers.getSigners();
-        const SmartContract = await ethers.getContractFactory("TaskManager", owner);
-        smartContract = await SmartContract.deploy();
-        await smartContract.deploymentTransaction().wait();
+        smartContract = await ethers.deployContract("TaskManager");
 
-        console.log("TaskManager Contract successful deployed with address: ", smartContract.target);
+        console.log("TaskManager Contract successful deployed with address: ", smartContract.address);
     })
 
     describe("createTask", () => {

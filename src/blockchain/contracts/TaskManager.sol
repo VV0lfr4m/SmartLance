@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-contract TaskManager {
-    constructor(){
+import "./ArbitrationManager.sol";
 
-    }
+contract TaskManager {
+
 
     struct Task {
         address owner;
@@ -14,6 +14,7 @@ contract TaskManager {
         uint endDate;
         bool isCompleted;
         bool isConfirmed;
+        bool isInArbitration;
     }
 
     event TaskCreated(
@@ -29,9 +30,14 @@ contract TaskManager {
 
     mapping(uint => Task) private tasks;
     uint private taskCount;
+    address private arbitrationManager;
+
+    constructor() {
+    }
 
     modifier existingTask(uint _taskId) {
-        require(taskExists(_taskId), "TaskManager.acceptTask: Task does not exist");
+        require(_taskId > 0 && _taskId <= taskCount, "TaskManager.acceptTask: Task does not exist");
+        _;
     }
 
     function createTask(string calldata _description, uint _budget, uint _endDate) external payable {
@@ -49,7 +55,8 @@ contract TaskManager {
         endDate : _endDate,
         isCompleted : false,
         isConfirmed : false,
-        executor : address(0)
+        executor : address(0),
+        isInArbitration : false
         });
 
         emit TaskCreated(taskCount, msg.sender, _description, _budget, _endDate);
@@ -79,7 +86,7 @@ contract TaskManager {
     }
 
     function getTask(uint _taskId) public view existingTask(_taskId) returns (address owner, string memory description,
-        uint256 budget, uint256 endDate, address executor, bool isCompleted, bool isConfirmed) {
+        uint256 budget, uint256 endDate, address executor, bool isCompleted, bool isConfirmed, bool isInArbitration) {
 
         Task memory task = tasks[_taskId];
 
@@ -90,7 +97,8 @@ contract TaskManager {
         task.endDate,
         task.executor,
         task.isCompleted,
-        task.isConfirmed
+        task.isConfirmed,
+        task.isInArbitration
         );
     }
 
@@ -105,11 +113,7 @@ contract TaskManager {
     }
 
 
-    function taskExists(uint taskId) internal view returns (bool) {
-        return taskId > 0 && taskId <= taskCount;
-    }
-
-    function acceptTask(uint _taskId) external payable existingTask(_taskId) {
+    function acceptTask(uint _taskId) external existingTask(_taskId) {
         Task storage task = tasks[_taskId];
 
         require(task.executor == address(0), "TaskManager.acceptTask: Task already accepted");
@@ -125,12 +129,12 @@ contract TaskManager {
         return address(this).balance;
     }
 
-    function confirmTaskCompletion(uint _taskId) external {
+    function confirmTaskCompletion(uint _taskId) external existingTask(_taskId) {
         Task storage task = tasks[_taskId];
 
-        require(taskExists(_taskId), "TaskManager.confirmTaskCompletion: Task doesn't exists");
         require(msg.sender == task.owner, "TaskManager.confirmTaskCompletion: Task does not exist");
         require(task.isCompleted, "TaskManager.confirmTaskCompletion: Task is not completed");
+        require(!task.isInArbitration, "TaskManager: Task is under arbitration");
 
         task.isConfirmed = true;
 
@@ -139,4 +143,48 @@ contract TaskManager {
 
         emit TaskConfirmed(_taskId, msg.sender);
     }
+
+
+    function initiateArbitration(uint _taskId, address _arbiter) external existingTask(_taskId) {
+        Task storage task = tasks[_taskId];
+        require(
+            msg.sender == task.owner || msg.sender == task.executor,
+            "TaskManager: Only owner or executor can initiate arbitration"
+        );
+        require(!task.isInArbitration, "TaskManager: Task already in arbitration");
+
+        arbitrationManager = _arbiter;
+        (bool success,) = address(_arbiter).call{value : task.budget}(
+            abi.encodeWithSignature(
+                "initializeArbitration(uint256,address,address,uint256,address)",
+                _taskId,
+                task.owner,
+                task.executor,
+                task.budget,
+                _arbiter
+            )
+        );
+
+        require(success, "TaskManager: Failed to initiate arbitration");
+
+        task.isInArbitration = true;
+    }
+
+
+    modifier onlyArbitrationManager() {
+        require(msg.sender == arbitrationManager, "TaskManager.onlyArbitrationManager: Only ArbitrationManager can call this function");
+        _;
+    }
+
+    //this function is listening Arbitration events of resolving or finalization
+    function completeArbitration(uint _taskId) external onlyArbitrationManager {
+        Task storage task = tasks[_taskId];
+        require(task.isInArbitration, "TaskManager: Task is not in arbitration");
+
+        task.isInArbitration = false;
+        arbitrationManager = address(0);
+
+    }
+
+
 }

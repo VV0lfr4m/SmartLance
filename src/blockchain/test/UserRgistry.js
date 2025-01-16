@@ -1,5 +1,5 @@
 const {expect} = require("chai");
-const {ethers, network} = require("hardhat");
+const {ethers, waffle} = require("hardhat");
 
 
 describe("UserRegistry", () => {
@@ -11,20 +11,20 @@ describe("UserRegistry", () => {
 
     beforeEach(async () => {
         [owner, seller, buyer] = await ethers.getSigners();
-        const SmartContract = await ethers.getContractFactory("UserRegistry", owner);
-        smartContract = await SmartContract.deploy();
-        await smartContract.deploymentTransaction().wait();
+        smartContract = await ethers.deployContract("UserRegistry");
 
-        console.log("UserRegistry Contract successful deployed with address: ", smartContract.target);
+
+        console.log("UserRegistry Contract successful deployed with address: ", smartContract.address);
+        console.log("UserRegistry signers owner.address: ", owner.address);
     })
 
     describe("isUserRegistered", () => {
         it("Should return true for registered user", async () => {
             await smartContract.connect(owner).registerUser("TestName", "testLink");
-            expect(await smartContract.isUserRegistered(owner)).to.be.true;
+            expect(await smartContract.isUserRegistered(owner.address)).to.be.true;
         })
         it("Should return false for non registered user", async () => {
-            expect(await smartContract.isUserRegistered(owner)).to.be.false;
+            expect(await smartContract.isUserRegistered(owner.address)).to.be.false;
         })
     })
 
@@ -35,13 +35,13 @@ describe("UserRegistry", () => {
             await smartContract.connect(owner).registerUser(testName, testBio);
             let username;
             let bio;
-            [username, bio] = await smartContract.getUserInfo(owner);
+            [username, bio] = await smartContract.getUserInfo(owner.address);
             expect(username).to.eq(testName);
             expect(bio).to.eq(testBio);
 
         })
         it("Should throw error User is not registered!", async () => {
-            await expect(smartContract.getUserInfo(owner)).to.be.revertedWith("getUserInfo(): User is not registered!");
+            await expect(smartContract.getUserInfo(owner.address)).to.be.revertedWith("getUserInfo(): User is not registered!");
         })
     })
 
@@ -50,17 +50,22 @@ describe("UserRegistry", () => {
             let testName = "TestName";
             let testBio = "testBio";
 
+            // Register the user
             let tx = await smartContract.connect(owner).registerUser(testName, testBio);
+            await tx.wait();  // Ensure the transaction is mined
+
+            // Retrieve the saved user information
             let savedUser = await smartContract.getUserInfo(owner.address);
 
-            expect(testName).to.eq(savedUser[0]);
-            expect(testBio).to.eq(savedUser[1]);
+            // Verify user information
+            expect(savedUser[0]).to.eq(testName);
+            expect(savedUser[1]).to.eq(testBio);
 
-            await expect(tx).to
-                .emit(smartContract, "UserRegistered")
-                .withArgs(owner, testName);
-
-        })
+            // Check if the event was emitted correctly
+             expect(tx)
+                .to.emit(smartContract, "UserRegistered")
+                .withArgs(owner.address, testName);
+        });
         it("Should throw error registerUser(): User already registered!", async () => {
             let testName = "TestName";
             let testBio = "testBio";

@@ -36,7 +36,7 @@ contract TaskManager {
     }
 
     modifier existingTask(uint _taskId) {
-        require(_taskId > 0 && _taskId <= taskCount, "TaskManager.acceptTask: Task does not exist");
+        require(_taskId > 0 && _taskId <= taskCount, "TaskManager.existingTask: Task does not exist");
         _;
     }
 
@@ -129,10 +129,10 @@ contract TaskManager {
         return address(this).balance;
     }
 
-    function confirmTaskCompletion(uint _taskId) external existingTask(_taskId) {
+    function confirmTaskCompletion(uint _taskId) external payable existingTask(_taskId) {
         Task storage task = tasks[_taskId];
 
-        require(msg.sender == task.owner, "TaskManager.confirmTaskCompletion: Task does not exist");
+        require(msg.sender == task.owner, "TaskManager.confirmTaskCompletion: You are not an owner");
         require(task.isCompleted, "TaskManager.confirmTaskCompletion: Task is not completed");
         require(!task.isInArbitration, "TaskManager: Task is under arbitration");
 

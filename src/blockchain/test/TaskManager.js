@@ -23,7 +23,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            let tx = await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            let tx = await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let task = await smartContract.getTask(1);
 
@@ -44,7 +44,7 @@ describe("TaskManager", () => {
             let budget = ethers.utils.parseEther("1");
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await expect(smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("0.5") })).to.be
+            await expect(smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("0.5")})).to.be
                 .revertedWith("TaskManager.createTask: Insufficient funds sent!");
         })
         it("Should revert with TaskManager.createTask: description should not be empty!", async () => {
@@ -52,7 +52,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await expect(smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") })).to.be
+            await expect(smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")})).to.be
                 .revertedWith("TaskManager.createTask: description should not be empty!");
         })
         it("TaskManager.createTask: budget should be greater then 0!", async () => {
@@ -60,7 +60,7 @@ describe("TaskManager", () => {
             let budget = 0;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await expect(smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") })).to.be
+            await expect(smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")})).to.be
                 .revertedWith("TaskManager.createTask: budget should be greater then 0!");
         })
         it("Should revert with TaskManager.createTask: endDate must be in the future!", async () => {
@@ -68,7 +68,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = 1436784089;//time in past
 
-            await expect(smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") })).to.be
+            await expect(smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")})).to.be
                 .revertedWith("TaskManager.createTask: endDate must be in the future!");
         })
     })
@@ -79,7 +79,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -101,7 +101,7 @@ describe("TaskManager", () => {
             let taskId = 0;
             let _executor = executor.address;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             await expect(smartContract.connect(executor).assignExecutor(taskId, _executor)).to.be
                 .revertedWith("TaskManager.existingTask: Task does not exist");
@@ -114,7 +114,7 @@ describe("TaskManager", () => {
             let taskId = 1;
             let _executor = executor.address;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             await expect(smartContract.connect(executor).assignExecutor(taskId, _executor)).to.be
                 .revertedWith("TaskManager.assignExecutor: Only owner can perform this operation!");
@@ -126,7 +126,7 @@ describe("TaskManager", () => {
             let endDate = Math.floor(Date.now() / 1000) * 360000;
             let taskId = 1;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             await expect(smartContract.assignExecutor(taskId, ZERO_ADDRESS)).to.be
                 .revertedWith("TaskManager.assignExecutor: Invalid executor address!");
@@ -139,7 +139,7 @@ describe("TaskManager", () => {
             let taskId = 1;
             let _executor = executor.address;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
             await smartContract.assignExecutor(taskId, _executor);
 
             await expect(smartContract.assignExecutor(taskId, _executor)).to.be
@@ -153,7 +153,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -175,7 +175,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -190,7 +190,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -207,7 +207,7 @@ describe("TaskManager", () => {
             let budget = 120000;
             let endDate = Math.floor(Date.now() / 1000) + 160000;
 
-            await smartContract.createTask( descr, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.createTask(descr, budget, endDate, {value: ethers.utils.parseEther("1")});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -228,7 +228,7 @@ describe("TaskManager", () => {
             const description = "Test Task";
             const budget = ethers.utils.parseEther("1");
             endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask(description, budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.connect(owner).createTask(description, budget, endDate, {value: ethers.utils.parseEther("1")});
         });
 
         it("should return the correct task details", async () => {
@@ -248,8 +248,8 @@ describe("TaskManager", () => {
             const budget = ethers.utils.parseEther("1");
             const endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: ethers.utils.parseEther("1") });
-            await smartContract.connect(owner).createTask("Task 2", budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: ethers.utils.parseEther("1")});
+            await smartContract.connect(owner).createTask("Task 2", budget, endDate, {value: ethers.utils.parseEther("1")});
         });
 
         it("should return all tasks", async () => {
@@ -267,7 +267,7 @@ describe("TaskManager", () => {
             const budget = ethers.utils.parseEther("1");
             const endDate = Math.floor(Date.now() / 1000) * 360000;
 
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: ethers.utils.parseEther("1")});
         });
 
         it("should accepts task and emit event", async () => {
@@ -301,7 +301,7 @@ describe("TaskManager", () => {
             const depositAmount = ethers.utils.parseEther("1"); // 1 Ether
             const budget = ethers.utils.parseEther("1");
             const endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: ethers.utils.parseEther("1") });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: ethers.utils.parseEther("1")});
 
 
             // Get the contract's balance using the `getContractBalance` function
@@ -317,7 +317,7 @@ describe("TaskManager", () => {
 
             const budget = 1000;
             const endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: budget });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -337,7 +337,7 @@ describe("TaskManager", () => {
         it("Should revert with TaskManager.confirmTaskCompletion: You are not an owner", async () => {
             const budget = 1000;
             const endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: budget });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -351,7 +351,7 @@ describe("TaskManager", () => {
         it("Should revert with TaskManager.confirmTaskCompletion: Task is not completed", async () => {
             const budget = 1000;
             const endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: budget });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -364,7 +364,7 @@ describe("TaskManager", () => {
         it("Should revert with TaskManager: Task is under arbitration", async () => {
             const budget = 1000;
             const endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: budget });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
 
             let taskId = 1;
             let _executor = executor.address;
@@ -387,7 +387,7 @@ describe("TaskManager", () => {
         beforeEach(async () => {
             budget = BigInt(ethers.utils.parseEther("1")); // 1 Ether
             endDate = Math.floor(Date.now() / 1000) * 360000;
-            await smartContract.connect(owner).createTask("Task 1", budget, endDate, { value: budget });
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
 
             taskId = 1;
             await smartContract.assignExecutor(taskId, executor.address);
@@ -430,5 +430,114 @@ describe("TaskManager", () => {
                 .to.emit(smartContract, "ArbitrationCompleted")
                 .withArgs(taskId, arbiter.address);
         });
+    });
+
+    describe("initiateArbitration", () => {
+        let taskId = 1;
+        beforeEach(async () => {
+            const budget = 1000;
+            const endDate = Math.floor(Date.now() / 1000) * 360000;
+            await smartContract.connect(owner).createTask("Task 1", budget, endDate, {value: budget});
+
+
+            let _executor = executor.address;
+            await smartContract.assignExecutor(taskId, _executor);
+            await smartContract.connect(executor).completeTask(1);
+        });
+
+        it("Should allow only owner to initiate arbitration", async () => {
+            // Test if only owner or executor can initiate arbitration
+
+            const tx = await smartContract.connect(owner).initiateArbitration(taskId, arbiter.address);
+            await tx.wait(); // Ensure the transaction is mined
+            // Owner initiating arbitration
+            expect(tx)
+                .to.emit(smartContract, "ArbitrationInitiated")
+                .withArgs(taskId, taskId, arbiter.address);
+        });
+
+        it("Should allow only executor to initiate arbitration", async () => {
+            // Test if only owner or executor can initiate arbitration
+
+            // Executor initiating arbitration
+            let tx2 = await smartContract.connect(executor).initiateArbitration(taskId, arbiter.address);
+            await tx2.wait();
+            expect(tx2)
+                .to.emit(smartContract, "ArbitrationInitiated")
+                .withArgs(taskId, taskId, arbiter.address);
+        });
+
+        it("Should not allow not executor or owner to initiate arbitration", async () => {
+            // Test if only owner or executor can initiate arbitration
+
+            // Non-owner, non-executor (should fail)
+            expect(smartContract.connect(arbiter).initiateArbitration(taskId, arbiter.address)).to.be.revertedWith("TaskManager: Only owner or executor can initiate arbitration");
+        });
+
+        it("Should not allow arbitration if task is already in arbitration", async () => {
+            // First, initiate arbitration
+            await smartContract.connect(owner).initiateArbitration(taskId, arbiter.address);
+
+            // Try to initiate arbitration again (should fail)
+            await expect(
+                smartContract.connect(owner).initiateArbitration(taskId, arbiter.address)
+            ).to.be.revertedWith("TaskManager: Task already in arbitration");
+        });
+
+        it("Should successfully initiate arbitration and change task status", async () => {
+            // Initiating arbitration
+            const tx = await smartContract.connect(owner).initiateArbitration(taskId, arbiter.address);
+            await tx.wait(); // Ensure the transaction is mined
+            expect(tx)
+                .to.emit(smartContract, "ArbitrationInitiated")
+                .withArgs(taskId, arbiter.address);
+
+            // Check if task is now in arbitration
+            const task = await smartContract.getTask(taskId);
+            expect(task.isInArbitration).to.be.true;
+        });
+
+        /*it("Should revert if arbitration initiation fails due to call failure", async () => {
+            // Simulate failure by making the arbiter contract revert
+            //const failingArbiterAddress = "0x0000000000000000000000000000000000000000";  // Invalid address
+            const revertError = "ArbitrationManager.initializeArbitration: Incorrect amount sent";
+            /!*let tx = await ethers.provider.send("eth_call", [{
+                to: arbiter.address,
+                data: ethers.utils.defaultAbiCoder.encode(["uint256", "address", "address", "uint256", "address"], [taskId, owner.address, executor.address, 100, arbiter.address])
+            }]);*!//!*.then(() => {
+                throw new Error(revertError);  // Force the revert to happen as part of the mock
+            }).catch(err => {
+                // Catch the error to confirm it triggers the revert
+                expect(err.message).to.contain(revertError);
+            });*!/
+            let result = await ethers.provider.send("eth_call", [{
+                to: arbiter.address,
+                data: ethers.utils.defaultAbiCoder.encode(
+                    ["uint256", "address", "address", "uint256", "address"],
+                    [0, owner.address, executor.address, 100, arbiter.address]
+                )
+            }]).then(() => {
+                throw new Error(revertError);  // Force the revert to happen as part of the mock
+            }).catch(err => {
+                // Catch the error to confirm it triggers the revert
+                expect(err.message).to.contain(revertError);
+            });
+
+            console.log("Raw result:", result); // This will print the raw hex returned by the call
+
+// Attempt to decode, if result is not empty
+            if (result && result !== "0x") {
+                let decodedResult = ethers.utils.defaultAbiCoder.decode(["bool"], result);
+                let success = decodedResult[0]; // This should give you the success value
+
+                console.log("Success:", success);
+            } else {
+                console.log("No result returned from the call.");
+            }
+            //console.log(tx)
+            /!*await expect(
+                tx
+            ).to.be.revertedWith("TaskManager: Failed to initiate arbitration");*!/
+        });*/
     });
 })

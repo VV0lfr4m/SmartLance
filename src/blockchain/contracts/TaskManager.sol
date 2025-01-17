@@ -152,7 +152,7 @@ contract TaskManager {
         );
         require(!task.isInArbitration, "TaskManager: Task already in arbitration");
 
-        (bool success,) = address(_arbiter).call{value : task.budget}(
+        (bool success, ) = _arbiter.call{value: task.budget}(
             abi.encodeWithSignature(
                 "initializeArbitration(uint256,address,address,uint256,address)",
                 _taskId,

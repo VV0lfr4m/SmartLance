@@ -24,8 +24,26 @@ contract RatingManager {
         review.ratingCount++;
         review.comments[review.commentCount] = _comment;
         review.commentCount++;
+        review.reviewer = msg.sender;
 
         emit RatingGiven(msg.sender, _user, _rating, _comment);
+    }
+
+    function getReviews(address _user) public view returns (
+        uint totalRating,
+        uint ratingCount,
+        string[] memory comments,
+        uint commentCount,
+        address reviewer) {
+
+        Review storage review = reviews[_user];
+        return (
+        review.totalRating,
+        review.ratingCount,
+        getComments(_user),
+        review.commentCount,
+        review.reviewer
+        );
     }
 
     function getAverageRating(address _user) external view returns (uint) {
@@ -39,7 +57,7 @@ contract RatingManager {
         return reviews[_user].ratingCount;
     }
 
-    function getComments(address _user) external view returns (string[] memory) {
+    function getComments(address _user) public view returns (string[] memory) {
         Review storage review = reviews[_user];
         string[] memory comments = new string[](review.commentCount);
 

@@ -27,6 +27,7 @@ contract ArbitrationManager {
     event ArbitrationInitiated(uint indexed arbitrationId, uint indexed taskId, address indexed arbiter);
     event ArbitrationResolved(uint indexed arbitrationId, address indexed winner, uint amount);
     event ArbitrationFinalized(uint indexed taskId);
+    event Received(address sender, uint256 amount);
 
     modifier onlyParticipant(uint _taskId) {
         Arbitration memory arbitration = arbitrations[_taskId];
@@ -60,6 +61,7 @@ contract ArbitrationManager {
 
         arbCount++;
         emit ArbitrationInitiated(arbCount, _taskId, _arbiter);
+        emit Received(msg.sender, msg.value);
     }
 
     function resolveArbitration(uint _taskId, address _winner) external payable onlyArbiter(_taskId) {
@@ -117,5 +119,7 @@ contract ArbitrationManager {
         return address(this).balance;
     }
 
-    receive() external payable {}
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
 }

@@ -39,4 +39,8 @@ contract DeployFactory {
 
         initialized = true;
     }
+    function updateTaskManager(address payable newTaskManager) external onlyOwner {
+        ArbitrationManager(payable (arbitrationManager)).setTaskManager(newTaskManager);
+    }
+
 }

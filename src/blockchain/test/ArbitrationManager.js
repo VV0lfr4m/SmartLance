@@ -9,10 +9,11 @@ describe("ArbitrationManager", () => {
     let arbiter;
     let arbManager;
     let taskManager;
+    let deployFactory;
 
     beforeEach(async () => {
         [owner, executor, arbiter] = await ethers.getSigners();
-        const deployFactory = await ethers.deployContract("DeployFactory");
+        deployFactory = await ethers.deployContract("DeployFactory");
         await deployFactory.deployContracts();
 
         let taskManagerAdd =  await deployFactory.taskManager();
@@ -29,14 +30,9 @@ describe("ArbitrationManager", () => {
         arbManager = await ethers.getContractAt("ArbitrationManager", arbManagerAdd);
         expect(await arbManager.taskManagerAddress()).to.equal(taskManagerAdd);
 
-        console.log("------->------->------->------->-------> ")
-        console.log("------->------->------->------->-------> ")
-        console.log("------->------->------->------->-------> ")
-        console.log("------->------->------->------->-------> ")
-        //expect(await taskManager.contractOwner).to.equal(owner.address);
-        //expect(await arbManager.contractOwner).to.equal(owner.address);
-        console.log("taskManager.contractOwner() -------> ", await taskManager.contractOwner())
-        console.log("arbManager.contractOwner() -------> " ,await arbManager.contractOwner())
+
+        expect(await taskManager.contractOwner()).to.equal(deployFactory.address);
+        expect(await arbManager.contractOwner()).to.equal(deployFactory.address);
     })
 
     describe("initializeArbitration", () => {
@@ -201,34 +197,49 @@ describe("ArbitrationManager", () => {
         });
     });
     describe("setTaskManager", () => {
-        it("Should set TaskManager address by owner", async () => {
-            const newTaskManagerAddress = executor.address;
+        it("Should set TaskManager address by DeployFactory", async () => {
+            const newTaskManagerAddress = taskManager.address;
 
-            // Connect arbManager to the owner account
+            // Додаткові логери для перевірки стану
+            console.log("DeployFactory owner:", await deployFactory.owner());
+            console.log("ArbitrationManager owner:", await arbManager.contractOwner());
+            console.log("TaskManager address from DeployFactory:", newTaskManagerAddress);
+
+            // Виклик через DeployFactory
             await expect(
-                arbManager.connect(owner).setTaskManager(newTaskManagerAddress)
+                deployFactory.connect(owner).updateTaskManager(newTaskManagerAddress)
             ).to.not.be.reverted;
 
-            // Verify the TaskManager address was updated
+            // Перевірка, що TaskManager адреса оновлена
             expect(await arbManager.taskManagerAddress()).to.equal(newTaskManagerAddress);
         });
 
-        it("Should revert if non-owner tries to set TaskManager address", async () => {
-            const newTaskManagerAddress = executor.address;
 
-            // Non-owner tries to set the TaskManager address
+        it("Should revert if non-owner tries to set TaskManager address", async () => {
+            const newTaskManagerAddress = taskManager.address;
+
+            // Спроба оновлення TaskManager адреси від імені користувача, який не є власником
             await expect(
                 arbManager.connect(executor).setTaskManager(newTaskManagerAddress)
             ).to.be.revertedWith("ArbitrationManager: Only owner can set TaskManager");
         });
+
+        it("Should revert if the TaskManager address is zero", async () => {
+            const invalidTaskManagerAddress = ethers.constants.AddressZero;
+            // Виклик функції setTaskManager від імені DeployFactory
+            await expect(
+                deployFactory.connect(owner).updateTaskManager(invalidTaskManagerAddress)
+            ).to.be.revertedWith("ArbitrationManager: Invalid TaskManager address");
+        });
     });
+
     describe("isInArbitration", () => {
         it("Should set TaskManager address by owner", async () => {
-            const newTaskManagerAddress = executor.address;
+            const newTaskManagerAddress = taskManager.address;
 
             // Ensure the call is made from the owner account
             await expect(
-                arbManager.connect(owner).setTaskManager(newTaskManagerAddress)
+                deployFactory.connect(owner).updateTaskManager(newTaskManagerAddress)
             ).to.not.be.reverted;
 
             // Verify the TaskManager address was updated

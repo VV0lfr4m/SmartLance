@@ -1,20 +1,21 @@
+
 const {expect} = require("chai");
-const {ethers, network} = require("hardhat");
+const {ethers} = require("hardhat");
 
 
 describe("TaskManager", () => {
 
     let owner;
     let executor;
-    let atbiter;
+    let arbiter;
     let smartContract;
     const ZERO_ADDRESS = ethers.constants.AddressZero;//"0x0000000000000000000000000000000000000000000000000000000000000000";
 
     beforeEach(async () => {
         [owner, executor, arbiter] = await ethers.getSigners();
-        smartContract = await ethers.deployContract("TaskManager");
-
-        console.log("TaskManager Contract successful deployed with address: ", smartContract.address);
+        const deployFactory = await ethers.deployContract("DeployFactory");
+        await deployFactory.deployContracts();
+        smartContract = await ethers.getContractAt("TaskManager", await deployFactory.taskManager());
     })
 
     describe("createTask", () => {
@@ -538,6 +539,7 @@ describe("TaskManager", () => {
             /!*await expect(
                 tx
             ).to.be.revertedWith("TaskManager: Failed to initiate arbitration");*!/
+            remove funds IN VALUE IN TRANSACTION
         });*/
     });
 })

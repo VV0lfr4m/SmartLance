@@ -11,8 +11,6 @@ describe("ProfileManager", () => {
     beforeEach(async () => {
         [owner, executor] = await ethers.getSigners();
         smartContract = await ethers.deployContract("ProfileManager");
-
-        console.log("ProfileManager Contract successful deployed with address: ", smartContract.address);
     })
 
     describe("createProfile", () => {
@@ -89,6 +87,14 @@ describe("ProfileManager", () => {
             let tx = smartContract.updateProfile(_username, _bio, _avatarHash);
 
             await expect(tx).to.be.revertedWith("ProfileManager.updateProfile: Profile is not created");
+        })
+    })
+
+    describe("getProfile", () => {
+        it("Should revert with ProfileManager.getProfile: Invalid user", async () => {
+            let tx = smartContract.getProfile(ethers.constants.AddressZero);
+
+            await expect(tx).to.be.revertedWith("ProfileManager.getProfile: Invalid user");
         })
     })
 

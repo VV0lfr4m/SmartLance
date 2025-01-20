@@ -12,10 +12,6 @@ describe("UserRegistry", () => {
     beforeEach(async () => {
         [owner, seller, buyer] = await ethers.getSigners();
         smartContract = await ethers.deployContract("UserRegistry");
-
-
-        console.log("UserRegistry Contract successful deployed with address: ", smartContract.address);
-        console.log("UserRegistry signers owner.address: ", owner.address);
     })
 
     describe("isUserRegistered", () => {

@@ -11,8 +11,6 @@ describe("RatingManager", () => {
     beforeEach(async () => {
         [owner, executor] = await ethers.getSigners();
         smartContract = await ethers.deployContract("RatingManager");
-
-        console.log("RatingManager Contract successful deployed with address: ", smartContract.address);
     })
 
     describe("giveRating", () => {

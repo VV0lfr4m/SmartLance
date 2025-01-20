@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "./ArbitrationManager.sol";
 
 contract TaskManager {
-
+    address public arbitrationManagerAddress;
 
     struct Task {
         address owner;
@@ -27,15 +27,24 @@ contract TaskManager {
     event TaskAssigned(uint indexed taskId, address indexed executor);
     event TaskCompleted(uint indexed taskId);
     event TaskConfirmed(uint indexed taskId, address indexed owner);
+    event ArbitrationInitiated(uint indexed taskId, address indexed arbiter);
 
     mapping(uint => Task) private tasks;
     uint private taskCount;
+    address public contractOwner;
 
-    constructor() {
+    constructor(address _owner) {
+        require(_owner != address(0), "TaskManager: Invalid owner address");
+        contractOwner = _owner;
     }
 
     modifier existingTask(uint _taskId) {
         require(_taskId > 0 && _taskId <= taskCount, "TaskManager.existingTask: Task does not exist");
+        _;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == contractOwner, "Only owner can call this function");
         _;
     }
 
@@ -143,16 +152,19 @@ contract TaskManager {
         emit TaskConfirmed(_taskId, msg.sender);
     }
 
+    function setArbitrationManager(address _arbitrationManagerAddress) external onlyOwner {
+        require(_arbitrationManagerAddress != address(0), "TaskManager: Invalid ArbitrationManager address");
+        arbitrationManagerAddress = _arbitrationManagerAddress;
+    }
 
     function initiateArbitration(uint _taskId, address _arbiter) external existingTask(_taskId) {
         Task storage task = tasks[_taskId];
-        require(
-            msg.sender == task.owner || msg.sender == task.executor,
-            "TaskManager: Only owner or executor can initiate arbitration"
-        );
+        require(msg.sender == task.owner
+            || msg.sender == task.executor, "TaskManager: Only owner or executor can initiate arbitration");
         require(!task.isInArbitration, "TaskManager: Task already in arbitration");
+        require(_arbiter != address(0), "TaskManager.initiateArbitration: Invalid arbiter address");
 
-        (bool success, ) = _arbiter.call{value: task.budget}(
+        (bool success, ) = arbitrationManagerAddress.call{value: task.budget}(
             abi.encodeWithSignature(
                 "initializeArbitration(uint256,address,address,uint256,address)",
                 _taskId,
@@ -166,6 +178,7 @@ contract TaskManager {
         require(success, "TaskManager: Failed to initiate arbitration");
 
         task.isInArbitration = true;
+        emit ArbitrationInitiated(_taskId, _arbiter);
     }
 
 

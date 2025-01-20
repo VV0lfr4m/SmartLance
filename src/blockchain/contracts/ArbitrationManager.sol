@@ -3,11 +3,16 @@ pragma solidity ^0.8.0;
 import "./TaskManager.sol";
 
 contract ArbitrationManager {
-    address private taskManagerAddress;
+    address public taskManagerAddress;
+    address public contractOwner;
+    constructor(address _owner) {
+        require(_owner != address(0), "ArbitrationManager: Invalid owner address");
+        contractOwner = _owner;
+    }
 
-    constructor(address _taskManagerAddress) payable {
-        require(_taskManagerAddress != address(0), "ArbitrationManager: Invalid TaskManager address");
-        taskManagerAddress = _taskManagerAddress;
+    modifier onlyOwner() {
+        require(msg.sender == contractOwner, "ArbitrationManager: Only owner can set TaskManager");
+        _;
     }
 
     struct Arbitration {
@@ -45,12 +50,13 @@ contract ArbitrationManager {
         _;
     }
 
+    function setTaskManager(address _taskManagerAddress) external onlyOwner {
+        require(_taskManagerAddress != address(0), "ArbitrationManager: Invalid TaskManager address");
+        taskManagerAddress = _taskManagerAddress;
+    }
+
     function initializeArbitration(uint _taskId, address _owner, address _executor, uint _budget, address _arbiter) external payable onlyTaskManager {
         Arbitration storage arb = arbitrations[_taskId];
-        require(arb.taskId == 0, "ArbitrationManager.initializeArbitration: Arbitration already exists");
-        require(_arbiter != address(0), "ArbitrationManager.initializeArbitration: Invalid arbiter address");
-        require(msg.value == _budget, "ArbitrationManager.initializeArbitration: Incorrect amount sent");
-
         arb.taskId = _taskId;
         arb.owner = _owner;
         arb.executor = _executor;

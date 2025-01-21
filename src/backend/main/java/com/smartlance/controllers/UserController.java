@@ -1,9 +1,8 @@
 package com.smartlance.controllers;
 
+import com.smartlance.blockchain.UserRegistryService;
 import com.smartlance.models.User;
 import com.smartlance.services.user.IUserService;
-import com.smartlance.services.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +11,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private IUserService userService;
+    private final IUserService userService;
+    private final UserRegistryService userRegistryService;
 
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, UserRegistryService userRegistryService) {
         this.userService = userService;
+        this.userRegistryService = userRegistryService;
     }
 
 
@@ -35,5 +36,15 @@ public class UserController {
     public ResponseEntity<Boolean> isUserRegistered(@PathVariable String id) {
         boolean registered = userService.isUserRegistered(id);
         return ResponseEntity.ok(registered);
+    }
+
+    @GetMapping("/sync")
+    public ResponseEntity<String> syncUserData(@RequestParam String transactionHash) {
+        try {
+            userRegistryService.syncUserData(transactionHash);
+            return ResponseEntity.ok("User data synchronized successfully");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error during synchronization: " + e.getMessage());
+        }
     }
 }

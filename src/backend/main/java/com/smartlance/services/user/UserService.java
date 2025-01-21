@@ -30,4 +30,9 @@ public class UserService implements IUserService {
     public boolean isUserRegistered(String id) {
         return userRepository.existsById(id);
     }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
 }

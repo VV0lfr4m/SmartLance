@@ -8,4 +8,5 @@ public interface IUserService {
     User registerUser(User user);
     Optional<User> getUserById(String id);
     boolean isUserRegistered(String id);
+    User updateUser(User user);
 }

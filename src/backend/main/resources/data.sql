@@ -1,0 +1,21 @@
+-- Додавання користувачів
+INSERT INTO users (id, username, bio)
+VALUES ('0x123', 'Alice', 'Alice bio'),
+       ('0x456', 'Bob', 'Bob  bio'),
+       ('0x789', 'Charlie', 'Charlie  bio');
+
+-- Додавання завдань
+INSERT INTO tasks (id, owner_address, executor_address, description, budget, deadline, is_completed, is_confirmed, is_in_arbitration)
+VALUES (1, '0x123', NULL, 'First task', 50.0, '2025-01-30T23:59:59', FALSE, FALSE, FALSE),
+       (2, '0x456', NULL, ' Second task', 100.0, '2025-02-01T23:59:59', FALSE, FALSE, FALSE);
+
+-- Додавання рейтингів
+INSERT INTO ratings (user_id, total_rating, rating_count)
+VALUES ('0x123', 500, 1),
+       ('0x456', 400, 2);
+
+-- Коментарі до рейтингів
+INSERT INTO rating_comments (rating_user_id, comments)
+VALUES ('0x123', 'Great work!'),
+       ('0x456', 'Good job'),
+       ('0x456', 'Could be faster');

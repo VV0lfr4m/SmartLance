@@ -4,6 +4,14 @@ pragma solidity ^0.8.0;
 import "./TaskManager.sol";
 import "./ArbitrationManager.sol";
 
+//todo
+// Централізуємо логіку управління через DeployFactory для уникнення прямого втручання
+//в контракти TaskManager та ArbitrationManager.
+// Це забезпечує єдиний контрольний пункт для всіх адміністративних дій.
+
+// Додаємо події для відстеження ключових змін, як-от оновлення TaskManager.
+// Це підвищує прозорість і спрощує аудит дій у контракті.
+
 contract DeployFactory {
     address public taskManager;
     address public arbitrationManager;

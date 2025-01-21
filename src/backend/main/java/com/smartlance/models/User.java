@@ -14,6 +14,9 @@ public class User {
     @Column(nullable = false)
     private String bio;
 
+    @Column(nullable = false)
+    private String bioLink;
+
     // Getters and Setters
     public String getId() {
         return id;
@@ -21,6 +24,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getBioLink() {
+        return bioLink;
+    }
+
+    public void setBioLink(String bioLink) {
+        this.bioLink = bioLink;
     }
 
     public String getUsername() {

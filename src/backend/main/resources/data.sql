@@ -1,8 +1,8 @@
 -- Додавання користувачів
-INSERT INTO users (id, username, bio)
-VALUES ('0x123', 'Alice', 'Alice bio'),
-       ('0x456', 'Bob', 'Bob  bio'),
-       ('0x789', 'Charlie', 'Charlie  bio');
+INSERT INTO users (id, username, bio, bio_link)
+VALUES ('0x123', 'Alice', 'Alice bio', 'link'),
+       ('0x456', 'Bob', 'Bob  bio', 'link'),
+       ('0x789', 'Charlie', 'Charlie  bio', 'link');
 
 -- Додавання завдань
 INSERT INTO tasks (id, owner_address, executor_address, description, budget, deadline, is_completed, is_confirmed, is_in_arbitration)

@@ -18,6 +18,8 @@ public class UserService implements IUserService {
         if (userRepository.existsById(user.getId())) {
             throw new RuntimeException("User already registered");
         }
+        //todo set a link to bio page
+        user.setBioLink("link_generated");
         return userRepository.save(user);
     }
 

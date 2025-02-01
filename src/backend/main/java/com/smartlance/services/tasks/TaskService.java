@@ -33,6 +33,7 @@ public class TaskService implements ITaskService {
     }
 
     public Task completeTask(Long id) {
+        //todo check for executor
         Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setCompleted(true);
         return taskRepository.save(task);

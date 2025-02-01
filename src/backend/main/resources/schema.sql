@@ -17,7 +17,7 @@ CREATE TABLE profiles (
 
 -- Створення таблиці завдань
 CREATE TABLE tasks (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     owner_address VARCHAR(255) NOT NULL,
     executor_address VARCHAR(255),
     description VARCHAR(255) NOT NULL,

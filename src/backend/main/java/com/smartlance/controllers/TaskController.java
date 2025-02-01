@@ -37,13 +37,13 @@ public class TaskController {
         return task.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}/assign")
+    @PatchMapping("/{id}/assign")
     public ResponseEntity<Task> assignExecutor(@PathVariable Long id, @RequestParam String executorAddress) {
         Task updatedTask = taskService.assignExecutor(id, executorAddress);
         return ResponseEntity.ok(updatedTask);
     }
 
-    @PutMapping("/{id}/complete")
+    @PostMapping("/{id}/complete")
     public ResponseEntity<Task> completeTask(@PathVariable Long id) {
         Task completedTask = taskService.completeTask(id);
         return ResponseEntity.ok(completedTask);

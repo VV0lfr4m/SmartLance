@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface IUserService {
     User registerUser(User user);
-    Optional<User> getUserById(String id);
+    Optional<User> getUserByAddress(String id);
     boolean isUserRegistered(String id);
     User updateUser(User user);
 }

@@ -1,11 +1,11 @@
-/*
+
 package com.smartlance.blockchain;
 
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/registry/users")
 public class UserRegistryController {
 
     private final UserRegistryService userRegistryService;
@@ -32,4 +32,4 @@ public class UserRegistryController {
             return "Error retrieving user bio: " + e.getMessage();
         }
     }
-}*/
+}

@@ -55,10 +55,22 @@ public class UserRegistryService {
         String username = userInfo.component1();
         String bio = userInfo.component2();
 
+
+    }
+
+    public void registerUser(String username, String bio) throws Exception {
         // Збереження даних у базу
         User user = new User();
         user.setUsername(username);
         user.setBio(bio);
         userService.registerUser(user);
+
+        userRegistry.registerUser(username, bio).send();
+    }
+
+    public String getUserInfo(String userAddress) throws Exception {
+        // Зчитування даних з контракту
+        Tuple2<String, String> userInfo = userRegistry.getUserInfo(userAddress).send();
+        return userInfo.toString();
     }
 }

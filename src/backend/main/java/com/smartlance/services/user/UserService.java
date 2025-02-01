@@ -23,8 +23,8 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> getUserById(String id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserByAddress(String address) {
+        return userRepository.findById(address);
     }
 
     public boolean isUserRegistered(String id) {

@@ -1,6 +1,7 @@
 package com.smartlance.controllers;
 
 import com.smartlance.models.Rating;
+import com.smartlance.models.RatingDto;
 import com.smartlance.services.rating.IRatingService;
 import com.smartlance.services.rating.RatingService;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +19,20 @@ public class RatingController {
     }
 
     @PostMapping
-    public ResponseEntity<Rating> addRating(
-            @RequestParam String userId,
-            @RequestParam int rating,
-            @RequestParam String comment
-    ) {
-        Rating updatedRating = ratingService.addRating(userId, rating, comment);
+    public ResponseEntity<Rating> addRating(@RequestBody RatingDto ratingDto) {
+        Rating updatedRating = ratingService.addRating(ratingDto);
         return ResponseEntity.ok(updatedRating);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Rating> getRatings(@PathVariable String userId) {
-        Optional<Rating> rating = ratingService.getRatings(userId);
+    @GetMapping("/{address}")
+    public ResponseEntity<Rating> getRatings(@PathVariable String address) {
+        Optional<Rating> rating = ratingService.getRatings(address);
         return rating.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{userId}/average")
-    public ResponseEntity<Double> getAverageRating(@PathVariable String userId) {
-        double averageRating = ratingService.getAverageRating(userId);
+    @GetMapping("/{address}/average")
+    public ResponseEntity<Double> getAverageRating(@PathVariable String address) {
+        double averageRating = ratingService.getAverageRating(address);
         return ResponseEntity.ok(averageRating);
     }
 }

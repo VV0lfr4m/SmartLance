@@ -30,7 +30,7 @@ class UserServiceTest {
         user = new User();
         user.setId("0x123");
         user.setUsername("Alice");
-        user.setBio("Alice's bio");
+        user.setBio("link_generated");
     }
 
     @Test

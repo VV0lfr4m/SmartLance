@@ -19,15 +19,8 @@ public class ArbitrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Arbitration> initiateArbitration(
-            @RequestParam Long taskId,
-            @RequestParam String owner,
-            @RequestParam String executor,
-            @RequestParam BigDecimal budget,
-            @RequestParam String arbiter
-    ) {
-        Arbitration arbitration = arbitrationService.initializeArbitration(taskId, owner, executor, budget, arbiter);
-        return ResponseEntity.ok(arbitration);
+    public ResponseEntity<Arbitration> initiateArbitration(@RequestBody Arbitration arbitration) {
+        return ResponseEntity.ok(arbitrationService.initializeArbitration(arbitration));
     }
 
     @GetMapping("/{taskId}")
@@ -36,7 +29,7 @@ public class ArbitrationController {
         return arbitration.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{taskId}/resolve")
+    @PostMapping("/{taskId}/resolve")
     public ResponseEntity<Arbitration> resolveArbitration(
             @PathVariable Long taskId,
             @RequestParam String winner
@@ -45,7 +38,7 @@ public class ArbitrationController {
         return ResponseEntity.ok(arbitration);
     }
 
-    @PutMapping("/{taskId}/finalize")
+    @PostMapping("/{taskId}/finalize")
     public ResponseEntity<String> finalizeArbitration(@PathVariable Long taskId) {
         arbitrationService.finalizeArbitration(taskId);
         return ResponseEntity.ok("Arbitration finalized for task: " + taskId);

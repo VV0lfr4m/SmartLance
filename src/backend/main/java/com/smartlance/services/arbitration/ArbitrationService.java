@@ -22,14 +22,9 @@ public class ArbitrationService implements IArbitrationService {
         this.transactionManager = transactionManager;*/
     }
 
-    public Arbitration initializeArbitration(Long taskId, String owner, String executor, BigDecimal budget, String arbiter) {
+    public Arbitration initializeArbitration(Arbitration arbitration) {
         // Створення арбітражу
-        Arbitration arbitration = new Arbitration();
-        arbitration.setTaskId(taskId);
-        arbitration.setOwnerAddress(owner);
-        arbitration.setExecutorAddress(executor);
-        arbitration.setArbiterAddress(arbiter);
-        arbitration.setBudget(budget);
+        //todo perform validation
         arbitration.setResolved(false);
 
         // Зберігаємо в базу

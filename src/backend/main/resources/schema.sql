@@ -7,6 +7,14 @@ CREATE TABLE users (
     bio_link VARCHAR(255)
 );
 
+-- Створення таблиці профалів
+CREATE TABLE profiles (
+    id VARCHAR(255) PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    bio VARCHAR(255),
+    avatar_hash VARCHAR(255)
+);
+
 -- Створення таблиці завдань
 CREATE TABLE tasks (
     id BIGINT PRIMARY KEY,

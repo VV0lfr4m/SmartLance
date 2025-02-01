@@ -1,7 +1,6 @@
 package com.smartlance.services.user;
 
 import com.smartlance.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,7 +18,8 @@ public class UserService implements IUserService {
             throw new RuntimeException("User already registered");
         }
         //todo set a link to bio page
-        user.setBioLink("link_generated");
+        user.setBioFull(user.getBio());
+        user.setBio("link_generated");
         return userRepository.save(user);
     }
 

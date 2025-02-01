@@ -20,21 +20,18 @@ public class UserController {
     }
 
 
-    //+
     @PostMapping
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.registerUser(user);
         return ResponseEntity.ok(registeredUser);
     }
 
-    //+
     @GetMapping("/{address}")
     public ResponseEntity<User> getUserByAddress(@PathVariable String address) {
         Optional<User> user = userService.getUserByAddress(address);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //+
     @GetMapping("/{address}/isRegistered")
     public ResponseEntity<Boolean> isUserRegistered(@PathVariable String address) {
         boolean registered = userService.isUserRegistered(address);

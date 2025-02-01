@@ -4,6 +4,12 @@ VALUES ('0x123', 'Alice', 'Alice bio', 'link'),
        ('0x456', 'Bob', 'Bob  bio', 'link'),
        ('0x789', 'Charlie', 'Charlie  bio', 'link');
 
+-- Додавання профайлів
+INSERT INTO profiles (id, username, bio, avatar_hash)
+VALUES ('0x123', 'Alice', 'Alice bio', 'avatar_hash'),
+       ('0x456', 'Bob', 'Bob  bio', 'avatar_hash'),
+       ('0x789', 'Charlie', 'Charlie  bio', 'avatar_hash');
+
 -- Додавання завдань
 INSERT INTO tasks (id, owner_address, executor_address, description, budget, deadline, is_completed, is_confirmed, is_in_arbitration)
 VALUES (1, '0x123', NULL, 'First task', 50.0, '2025-01-30T23:59:59', FALSE, FALSE, FALSE),

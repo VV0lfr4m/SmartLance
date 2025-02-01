@@ -41,7 +41,7 @@ class UserServiceTest {
         User registeredUser = userService.registerUser(user);
 
         assertThat(registeredUser).isNotNull();
-        assertThat(registeredUser.getBioLink()).isEqualTo("link_generated");
+        assertThat(registeredUser.getBioFull()).isEqualTo("link_generated");
 
         verify(userRepository, times(1)).existsById(user.getId());
         verify(userRepository, times(1)).save(user);

@@ -20,13 +20,13 @@ public class ProfileController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile) throws Exception {
+    @PutMapping("/{address}")
+    public ResponseEntity<Profile> updateProfile(@RequestBody Profile profile, @PathVariable String address) throws Exception {
         return ResponseEntity.ok(profileService.updateProfile(profile));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Profile> getProfile(@PathVariable String walletAddress) throws Exception {
-        return ResponseEntity.ok(profileService.getProfile(walletAddress));
+    @GetMapping("/{address}")
+    public ResponseEntity<Profile> getProfile(@PathVariable String address) throws Exception {
+        return ResponseEntity.ok(profileService.getProfile(address));
     }
 }

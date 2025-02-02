@@ -1,13 +1,15 @@
 import './App.css'
 import Button from './components/Button';
+import Navbar from "./components/Navbar";
+import btnStyle from './styles/Button.module.css';
 
 function App() {
   return (
     <>
-        <Button text = {"Freelancer"} />
-        <Button text = {"Employer"} />
-        <Button text = {"Arbiter"} />
-        <Button text = {"Connect Wallet"} />
+        <Navbar/>
+        <Button text = {"Freelancer"} className={btnStyle.button} />
+        <Button text = {"Employer"} className={btnStyle.button}/>
+        <Button text = {"Arbiter"} className={btnStyle.button}/>
     </>
   )
 }

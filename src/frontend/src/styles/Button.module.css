@@ -1,8 +1,50 @@
 .button {
-    background-color: blue;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
+    width: 148px;
+    height: 48px;
+    /*position: absolute; /* або relative/fixed */
+    top: 694px;
+    left: 49px;
+    padding:  -50%;
+    display: flex; /* або grid */
+    gap: 10px;
+    border-radius: 6px 6px 6px 6px;
+    opacity: 1;
+    background: linear-gradient(225deg, #22BB4B 0%, #117523 100%);
+
+    /* Text styles */
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21.78px;
+    text-align: center;
+    text-decoration-skip-ink: none; /* Keeps underlines consistent */
+    white-space: nowrap;
+
+    /* Центрування тексту */
+    align-items: center; /* Вирівнює текст по вертикалі */
+    justify-content: center; /* Вирівнює текст по горизонталі */
+
+    border: none; /* Видаляє будь-який бордер */
+    outline: none; /* Прибирає підсвічення при фокусі */
+    transition: background 0.1s ease-in-out, transform 0.1s ease-in-out;
 }
+
+/* Ефект при наведенні */
+.button:hover {
+    background: linear-gradient(180deg, #28C857 0%, #138B30 100%);
+}
+
+/* Ефект при натисканні (затемнення тільки під час кліку) */
+.button:active {
+    background: linear-gradient(180deg, #1FAF42 0%, #0F6A20 100%);
+    box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.5);
+    transform: scale(0.98);
+}
+
+/* Видаляє ефект фокусу, але не скасовує `hover` */
+.button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+

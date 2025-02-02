@@ -8,8 +8,7 @@ function Button({text}) {
         alert('You clicked me!');
     }, []) ;
 
-    const [count, setCount] = useState(0);
-    return <button className={styles.button} onClick={handleClick}>{text} and you have clicked {count} times</button>;
+    return <button className={styles.button} onClick={handleClick}>{text}</button>;
 }
 
 export default Button;

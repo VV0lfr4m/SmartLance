@@ -1,3 +1,19 @@
+
+@layer utilities {
+    @keyframes infinite-scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%); /* Рухаємось на 100% ширини */
+        }
+    }
+
+    .animate-infinite-scroll {
+        animation: infinite-scroll 20s linear infinite;
+    }
+}
+
 html, body {
     margin: 0;
     padding: 0;

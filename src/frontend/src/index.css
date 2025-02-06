@@ -5,12 +5,12 @@
             transform: translateX(0);
         }
         to {
-            transform: translateX(-50%); /* Рухаємось на 100% ширини */
+            transform: translateX(-60%); /* Рухаємось на 100% ширини */
         }
     }
 
     .animate-infinite-scroll {
-        animation: infinite-scroll 20s linear infinite;
+        animation: infinite-scroll 40s linear infinite;
     }
 }
 

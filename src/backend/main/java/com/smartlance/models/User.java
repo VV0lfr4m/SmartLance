@@ -14,7 +14,7 @@ public class User {
     @Column(nullable = false)
     private String bio;
 
-    @Column
+    @Column(name = "boi_link")
     private String bioFull;
 
     // Getters and Setters

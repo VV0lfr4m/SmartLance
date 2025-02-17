@@ -1,75 +1,90 @@
-
 .lines-overlay {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    pointer-events: none; /* Ensure it doesn't block clicks */
+    pointer-events: none;
     z-index: 10;
 }
 
-/* Base Line Style */
-.lines-overlay div {
-    position: relative;
-    background-color: #22bb4b; /* Green color */
+/* Each Group */
+.g-1, .g-2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
 
+/* Move g-2 down */
+.g-2 {
+    top: 43%; /* Adjust this to match the second step position */
+}
+
+.line-separator {
+    transform: rotate(90deg);
+    width: 10%;
+    height: 3px;
+    top: 56%;
+    left: 50%;
+}
+
+/* Base Line Style */
+.line {
+    position: absolute;
+    background-color: #22bb4b;
+}
 
 /* Small Lines */
-.line-small-1 {
-    width: 40px; /* Adjust width to match the small SVG line */
+.g-1 .line-small-1, .g-2 .line-small-1 {
+    width: 40px;
     height: 3px;
     top: 20%;
     left: 85%;
-
 }
 
-.line-small-2 {
-    width: 40px; /* Adjust width to match the small SVG line */
+.g-1 .line-small-2, .g-2 .line-small-2 {
+    width: 40px;
     height: 3px;
     top: 41.8%;
     left: 21.7%;
 }
 
-
 /* Middle Lines */
-.line-middle-1 {
-    width: 150px; /* Adjust width to match the middle SVG line */
-    height: 2px;
+.g-1 .line-middle-1, .g-2 .line-middle-1 {
+    width: 150px;
+    height: 3px;
     transform: rotate(90deg);
     left: 82%;
     top: 26%;
 }
 
-
-.line-middle-2 {
-    width: 120px; /* Adjust width to match the middle SVG line */
-    height: 2px;
+.g-1 .line-middle-2, .g-2 .line-middle-2 {
+    width: 120px;
+    height: 3px;
     transform: rotate(90deg);
     left: 16.7%;
     top: 37%;
 }
 
-
 /* Long Line */
-.line-long {
-    width: 800px; /* Adjust width to match the long SVG line */
-    height: 2px;
+.g-1 .line-long, .g-2 .line-long {
+    width: 800px;
+    height: 3px;
     left: 55%;
     top: 32%;
     transform: translateX(-50%);
 }
 
-
-/* Apply to all lines */
+/* Apply circles to all lines */
 .line::before,
 .line::after {
     content: "";
-    width: 8px; /* Circle size */
+    width: 8px;
     height: 8px;
     background-color: #22bb4b;
-    border-radius: 50%; /* Makes it a perfect circle */
+    border-radius: 50%;
     position: absolute;
 }
 

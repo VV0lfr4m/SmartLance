@@ -3,17 +3,28 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 50px;
-    max-width: 100vw;
-    background: transparent;
+    width: 100vw;  /* Ensures the navbar spans the full viewport width */
+    max-width: 100%;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background: #030303;
 }
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 .logo {
-    color: #22bb4b;
     font-size: 20px;
     font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(225deg, #23D252 0%, #14932B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-left: 1%;
 }
 
 .navLinks {
@@ -29,16 +40,22 @@
     font-size: 16px;
     cursor: pointer;
     transition: color 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
 .navItem:hover {
-    color: #22bb4b;
+    background: linear-gradient(225deg, #23D252 0%, #14932B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
+
+
 
 .btn {
     background: linear-gradient(225deg, #22bb4b 0%, #117523 100%);
     color: white;
     font-weight: bold;
+    font-family: 'Inter', bold sans-serif;
     padding: 10px 20px;
     border: none;
     border-radius: 6px;

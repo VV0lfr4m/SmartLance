@@ -11,6 +11,7 @@
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 40px;
+    font-family: 'Kufam', bold sans-serif;
 }
 
 .steps {
@@ -62,6 +63,7 @@
     font-weight: bold;
     margin-bottom: 10px;
     color: #ffffff;
+    font-family: 'Kufam',  sans-serif;
 }
 
 .step h4 {
@@ -69,6 +71,7 @@
     font-weight: bold;
     margin-top: 10px;
     color: #FFFFFF;
+    font-family: 'Inter', light sans-serif;
 }
 .result {
     font-size: 16px;
@@ -82,6 +85,7 @@
     font-size: 14px;
     color: #FFFFFF;
     margin-bottom: 10px;
+    font-family: 'Inter', light sans-serif;
 }
 
 .step-content .result {
@@ -89,6 +93,7 @@
     font-weight: bold;
     color: #FFFFFF;
     margin-top: 10px;
+    font-family: 'Inter', bold sans-serif;
 }
 
 /* Adjusting List Spacing */
@@ -102,6 +107,7 @@
     font-size: 14px;
     color: #FFFFFF;
     margin-bottom: 5px;
+    font-family: 'Inter', light sans-serif;
 }
 
 /* Green Connecting Lines */

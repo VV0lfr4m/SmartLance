@@ -1,11 +1,13 @@
 import NavItem from "./NavItem";
 import Button from "./Button";
 import navStyles from '../styles/Navbar.module.css';
+import logo from "../assets/logoMini.svg";
 
 
 function Navbar() {
     return (
         <nav className={navStyles.navbar}>
+            <img src={logo} alt="logo" className="logo-img"/>
             <h3 className={navStyles.logo}>Smartlance</h3>
             <div className={navStyles.navLinks}>
                 <NavItem className={navStyles.navItem} text="Home" />

@@ -1,0 +1,127 @@
+/* Footer Base Styles */
+.footer {
+    padding: 40px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 0;
+    overflow: hidden;
+    margin: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Left Section */
+.footer-left {
+    flex: 1;
+    max-width: 500px;
+}
+
+.footer-title {
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(225deg, #23D252 0%, #14932B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-tagline {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #ccc;
+    display: inline-block;
+    white-space: nowrap;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-links {
+    display: flex;
+    gap: 50px;
+    margin-top: 20px;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    font-family: 'Inter', bold sans-serif;
+}
+
+.footer-column a {
+    display: flex;
+    font-size: 14px;
+    color: #c0c0c0;
+    text-decoration: none;
+    margin-bottom: 5px;
+    font-family: 'Inter', light sans-serif;
+}
+
+.footer-column a:hover {
+    background: linear-gradient(225deg, #23D252 0%, #14932B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.social-icons span {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+/* Right Section: Stacked Blocks */
+.footer-right {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.footer-block-gridd {
+    display: grid;
+    grid-template-columns: repeat(2, 50px);
+    grid-template-rows: repeat(3, 50px);
+    gap: 10px;
+}
+
+/* Block Styling */
+.footer-blockd {
+    width: 50px;
+    height: 50px;
+    border: 2px solid;
+    background: transparent;
+    border-radius: 0;
+}
+
+/* Border Color Logic */
+.footer-block-dark-left {
+    border-color: rgba(34, 187, 75, 0.5) rgba(34, 187, 75, 0.2) rgba(34, 187, 75, 0.5) rgba(34, 187, 75, 0.8);
+}
+
+.footer-block-dark-right {
+    border-color: rgba(34, 187, 75, 0.8) rgba(34, 187, 75, 0.5) rgba(34, 187, 75, 0.2) rgba(34, 187, 75, 0.5);
+}
+
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adds space between icons */
+}
+
+.icon {
+    width: 24px; /* Adjust size as needed */
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(1.1); /* Slight hover effect */
+}

@@ -1,14 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Kufam:wght@500&display=swap');
 
 .hero-container {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    padding-left: 2rem;
+    z-index: 1;
 }
 .hero-button {
     display: flex;
     gap: 10px;
     margin-top: 30px;
+
 }
 .text-container {
+    font-family: 'Kufam', sans-serif;
     text-align: left;
     font-size: 54px;
     width: 580px; /* Відповідає w-96 */

@@ -63,6 +63,7 @@ const HowItWorks = () => {
                 ))}
             </div>
             <LinesOverlay/>
+            <div className="blurred-ellipse-2"/>
         </div>
 
     );

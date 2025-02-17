@@ -4,15 +4,50 @@
 
   text-align: center;
   background-color: #030303;
+
 }
 
-/*div {
-  position: relative;
-}*/
+
 .blurred-ellipse {
   position: absolute;
   top: 20%;
   left: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(34, 187, 75, 0.6) 10%, rgba(3, 3, 3, 0) 80%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 3;
+
+}
+.blurred-ellipse-right {
+  position: absolute;
+  top: 43%;
+  right: -15%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(34, 187, 75, 0.6) 10%, rgba(3, 3, 3, 0) 80%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 3;
+}
+.blurred-ellipse-2 {
+  position: absolute;
+  top: 55%;
+  left: -30%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(34, 187, 75, 0.6) 10%, rgba(3, 3, 3, 0) 80%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 3;
+
+}
+
+.blurred-ellipse-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 300px;
   height: 300px;
   background: radial-gradient(circle, rgba(34, 187, 75, 0.6) 10%, rgba(3, 3, 3, 0) 80%);

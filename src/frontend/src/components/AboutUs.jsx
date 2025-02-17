@@ -26,6 +26,7 @@ function AboutUs() {
                     </div>
                 ))}
             </div>
+            <div className="blurred-ellipse-right"/>
         </div>
     );
 }

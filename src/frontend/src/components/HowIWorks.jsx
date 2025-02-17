@@ -1,4 +1,5 @@
 import '../styles/HowItWorks.css';
+import LinesOverlay from "./LinesOverlay";
 
 
 const HowItWorks = () => {
@@ -48,19 +49,22 @@ const HowItWorks = () => {
                 {steps.map((step, index) => (
                     <div key={index} className="step">
                         <img src={`/src/assets/icons/${step.icon}`} alt={step.title} className="step-icon" />
-                        <h3>{step.title}</h3>
-                        <h4>What they do:</h4>
-                        <ul>
-                            {step.description.map((point, i) => (
-                                <li key={i}>{point}</li>
-                            ))}
-                        </ul>
-                        <h4>Result:</h4>
-                        <p>{step.result}</p>
+                        <div className="step-text">
+                            <h3>{step.title}</h3>
+                            <h4>What they do:</h4>
+                            <ul>
+                                {step.description.map((point, i) => (
+                                    <li key={i}>{point}</li>
+                                ))}
+                            </ul>
+                            <p><span className="result">Result: </span>{step.result}</p>
+                        </div>
                     </div>
                 ))}
             </div>
+            <LinesOverlay/>
         </div>
+
     );
 };
 

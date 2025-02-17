@@ -4,6 +4,7 @@
     color: white;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
 .how-it-works h2 {
@@ -22,10 +23,11 @@
 
 .step {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    background: rgba(17, 51, 33, 0.9);
+    /*background: rgba(17, 51, 33, 0.9);
     border: 1px solid rgba(34, 187, 75, 0.5);
-    border-radius: 12px;
+    border-radius: 12px;*/
     padding: 20px;
     width: 100%;
     max-width: 900px;
@@ -34,12 +36,14 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     gap: 20px;
 }
+.step.reverse {
+    flex-direction: row-reverse;
+}
 
 .step-icon {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
     margin-right: 20px;
-    filter: brightness(0) invert(1);
     flex-shrink: 0; /* Prevents icon from shrinking */
 }
 
@@ -58,20 +62,26 @@
     font-size: 16px;
     font-weight: bold;
     margin-top: 10px;
-    color: #22bb4b;
+    color: #FFFFFF;
+}
+.result {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #FFFFFF;
 }
 
 /* Aligns "What they do:" and "Result:" */
 .step-content p {
     font-size: 14px;
-    color: #b0b0b0;
+    color: #FFFFFF;
     margin-bottom: 10px;
 }
 
 .step-content .result {
     display: block;
     font-weight: bold;
-    color: #22bb4b;
+    color: #FFFFFF;
     margin-top: 10px;
 }
 
@@ -79,16 +89,17 @@
 .step ul {
     margin: 10px 0;
     padding-left: 20px;
+    list-style-type: disc;
 }
 
 .step ul li {
     font-size: 14px;
-    color: #b0b0b0;
+    color: #FFFFFF;
     margin-bottom: 5px;
 }
 
 /* Green Connecting Lines */
-.step::before {
+/*.step::before {
     content: "";
     position: absolute;
     left: 50%;
@@ -113,7 +124,7 @@
     top: 50%;
 }
 
-/* Ensuring Proper Line Connection */
+!* Ensuring Proper Line Connection *!
 .steps .step:last-child::after {
     display: none;
-}
+}*/

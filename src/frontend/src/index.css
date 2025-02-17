@@ -23,4 +23,8 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: #030303;
+    scroll-behavior: smooth;
+}
+section {
+    scroll-margin-top: 6rem; /* Adjust this value based on navbar height */
 }

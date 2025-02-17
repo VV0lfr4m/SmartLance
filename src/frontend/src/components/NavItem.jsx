@@ -1,5 +1,5 @@
-function NavItem({ text, className }) {
-    return <div className={className}>{text}</div>;
+function NavItem({ href, text, className }) {
+    return <a href={href} className={className}>{text}</a>;
 }
 
 export default NavItem;

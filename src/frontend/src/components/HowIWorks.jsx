@@ -47,7 +47,7 @@ const HowItWorks = () => {
             <h2>How it works</h2>
             <div className="steps">
                 {steps.map((step, index) => (
-                    <div key={index} className="step">
+                    <div key={index} className={`step ${index % 2 === 1 ? "reverse" : ""}`}>
                         <img src={`/src/assets/icons/${step.icon}`} alt={step.title} className="step-icon" />
                         <div className="step-text">
                             <h3>{step.title}</h3>

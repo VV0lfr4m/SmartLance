@@ -39,6 +39,12 @@
 .step.reverse {
     flex-direction: row-reverse;
 }
+.step-text {
+    flex: 1;
+}
+.step.reverse .step-text {
+    padding-left: 17%; /* Adjust to match the icon spacing */
+}
 
 .step-icon {
     width: 150px;

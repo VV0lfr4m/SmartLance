@@ -79,3 +79,25 @@
     background: linear-gradient(180deg, #1FAF42 0%, #0F6A20 100%);
     transform: scale(0.98);
 }
+
+.submit-button {
+    background: linear-gradient(225deg, #22BB4B 0%, #117523 100%);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-button:hover {
+    background: linear-gradient(180deg, #28C857 0%, #138B30 100%);
+}
+
+.submit-button:disabled, .submit-button.disabled {
+    background: gray !important;  /* ✅ Force gray out */
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+

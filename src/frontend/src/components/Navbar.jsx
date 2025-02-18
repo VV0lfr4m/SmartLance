@@ -2,7 +2,7 @@ import NavItem from "./NavItem";
 import Button from "./Button";
 import navStyles from '../styles/Navbar.module.css';
 import logo from "../assets/logoMini.svg";
-import {useCallback, useEffect} from "react";
+import {useMemo, useEffect, useCallback} from "react";
 import {useState} from "react";
 
 
@@ -18,15 +18,14 @@ function Navbar() {
             alert("Metamask is not installed");
             return;
         }
-        if (walletAddress.length > 0) {
-            return;
-        }
+        if (walletAddress) return;
+
         const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
         setWalletAddress(accounts[0]);
 
     }, []);
 
-    const getCurrentWalletConnected = useCallback(async () => {
+    const getCurrentWalletConnected = async () => {
         if (!window.ethereum) {
             alert("Metamask is not installed");
             return;
@@ -41,13 +40,19 @@ function Navbar() {
         } catch (err) {
             console.error(err);
         }
-    }, []);
+    };
 
     const addAccountChangeListener = async () => {
         window.ethereum.on("accountsChanged", (accounts) => {
             setWalletAddress(accounts[0]);
         });
     }
+
+    const displayWallet = useMemo(() => {
+        return walletAddress
+            ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`
+            : "Connect Wallet"
+    }, [walletAddress]);
 
 
     return (
@@ -61,7 +66,7 @@ function Navbar() {
                 <NavItem className={navStyles.navItem} text="Contacts" href="#contact"/>
             </div>
             <Button onClick={connectWallet}
-                    text={walletAddress && walletAddress.length > 0 ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}` : "Connect Wallet"}
+                    text= {displayWallet}
                     className={navStyles.btn}/>
         </nav>
     );

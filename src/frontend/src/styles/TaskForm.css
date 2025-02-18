@@ -1,0 +1,81 @@
+.task-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(17, 51, 33, 0.9);
+    border: 1px solid rgba(34, 187, 75, 0.5);
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px; /* Ensures form doesn't stretch too wide */
+    text-align: left;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    margin: 40px auto; /* Centers the form */
+}
+
+/* Form Styling */
+.create-task-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels */
+.create-task-form label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    display: block;
+}
+
+/* Input Fields */
+.create-task-form input[type="text"],
+.create-task-form input[type="number"],
+.create-task-form input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(34, 187, 75, 0.5);
+    background: rgba(3, 3, 3, 0.9);
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+.create-task-form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter', sans-serif;
+}
+
+.create-task-form input:focus {
+    border: 1px solid #22bb4b;
+}
+
+/* Submit Button */
+.create-task-form button {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(225deg, #22BB4B 0%, #117523 100%);
+    border: none;
+    border-radius: 6px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out, transform 0.1s ease-in-out;
+    margin-top: 20px; /* Ensure spacing from inputs */
+}
+
+.create-task-form button:hover {
+    background: linear-gradient(180deg, #28C857 0%, #138B30 100%);
+}
+
+.create-task-form button:active {
+    background: linear-gradient(180deg, #1FAF42 0%, #0F6A20 100%);
+    transform: scale(0.98);
+}

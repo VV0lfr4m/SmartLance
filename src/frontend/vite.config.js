@@ -6,4 +6,8 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   root: '.',
   plugins: [react(), tailwindcss()],
+  json: {
+    namedExports: true,
+    stringify: false
+  }
 })

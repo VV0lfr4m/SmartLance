@@ -1,13 +1,22 @@
 import Button from "../components/Button";
 import {useState} from "react";
-import { getContract } from "../contracts/TaskManager";
-import { ethers } from "ethers";
 import "../styles/TaskForm.css";
+import * as TaskManagerUtils from "../contracts/utils/TaskManagerUtils";
 
 
 function TaskForm({addTask}) {
     const [loading, setLoading] = useState(false);
-    const [task, setTask] = useState({description : "", budget: "", endDate: ""})
+    const [task, setTask] = useState({
+        id: "",
+        owner: "",
+        description: "",
+        budget: "",
+        endDate: "",
+        executor: "",
+        isCompleted: false,
+        isConfirmed: false,
+        isInArbitration: false
+    });
 
     const handleChange = (e) => {
         setTask({... task, [e.target.name]: e.target.value})
@@ -18,23 +27,22 @@ function TaskForm({addTask}) {
             alert("Please fill all the fields");
             return;
         }
-        const contract = await getContract();
-        const date = Math.floor(new Date(task.endDate).getTime() / 1000);
         try {
             setLoading(true);
-            const transaction = await contract.createTask(task.description, task.budget, date, {value: ethers.parseEther(task.budget)});
-            await transaction.wait();
+            const transaction = await TaskManagerUtils.callCreateTask(task);
             console.log(transaction);
-            await contract.once("TaskCreated", (taskId, owner, description, budget, endDate) => {
-                console.log(`✅ Event detected: TaskCreated`);
-                console.log(`Task ID: ${taskId}`);
-                console.log(`Description: ${description}`);
-                console.log(`Budget: ${ethers.formatEther(budget)} ETH`);
-                console.log(`End Date: ${new Date(endDate * 1000).toLocaleString()}`);
-                console.log(`Owner: ${owner}`);
-            });
+            await TaskManagerUtils.listenTaskCreated();
             //addTask(task);
-            setTask({description : "", budget: "", endDate: ""});
+            setTask({
+                owner: "",
+                description: "",
+                budget: "",
+                endDate: "",
+                executor: "",
+                isCompleted: false,
+                isConfirmed: false,
+                isInArbitration: false
+            });
             alert("Task is created!");
         }catch (err) {
             console.error("Transaction failed:", error);

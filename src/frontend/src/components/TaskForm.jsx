@@ -4,7 +4,7 @@ import "../styles/TaskForm.css";
 import * as TaskManagerUtils from "../contracts/utils/TaskManagerUtils";
 
 
-function TaskForm({addTask}) {
+function TaskForm() {
     const [loading, setLoading] = useState(false);
     const [task, setTask] = useState({
         id: "",
@@ -31,9 +31,8 @@ function TaskForm({addTask}) {
             setLoading(true);
             const transaction = await TaskManagerUtils.callCreateTask(task);
             console.log(transaction);
-            await TaskManagerUtils.listenTaskCreated();
-            //addTask(task);
             setTask({
+                id: "",
                 owner: "",
                 description: "",
                 budget: "",

@@ -198,3 +198,8 @@ mvn test
 Frontend:
 
 npm test
+
+Run HARDHAT NODE AND DEPLOY CONTRACTS
+npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
+

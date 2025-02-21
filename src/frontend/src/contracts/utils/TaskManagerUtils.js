@@ -10,6 +10,7 @@ export async function callCreateTask(task) {
     try {
         const contract = await getContract();
         const date = Math.floor(new Date(task.endDate).getTime() / 1000);
+        console.log(`task descr - ${task.description} task budget - ${task.budget} task date ${date}`)
         const transaction = await contract.createTask(task.description, task.budget, date, {
             value: ethers.parseEther(task.budget)
         });
@@ -47,17 +48,18 @@ export async function callAssignExecutor(taskId, executorAddress) {
 export async function callGetTask(taskId) {
     try {
         const contract = await getContract();
-        const taskData = await contract.getTask(taskId);
+        const task = await contract.getTask(taskId);
+        console.log(`callGetTask - ${task}`);
         return {
-            id: index,
-            owner: taskData[0],
-            description: taskData[1],
-            budget: ethers.formatEther(taskData[2]),
-            endDate: new Date(taskData[3] * 1000).toLocaleString(),
-            executor: taskData[4],
-            isCompleted: taskData[5],
-            isConfirmed: taskData[6],
-            isInArbitration: taskData[7],
+            id: taskId,
+            owner: task[0],
+            executor: task[1],
+            description: task[2],
+            budget: task[3],
+            endDate: task[4].toString(),
+            isCompleted: task[5],
+            isConfirmed: task[6],
+            isInArbitration: task[7],
         };
     } catch (error) {
         console.error("Error fetching task:", error);
@@ -73,13 +75,14 @@ export async function callGetAllTasks() {
     try {
         const contract = await getContract();
         const tasksData = await contract.getAllTasks();
+        console.log(`task data from get all tasks ${tasksData}`);
         return tasksData.map((task, index) => ({
             id: index,
             owner: task[0],
-            description: task[1],
-            budget: ethers.formatEther(task[2]),
-            endDate: new Date(task[3] * 1000).toLocaleString(),
-            executor: task[4],
+            executor: task[1],
+            description: task[2],
+            budget: task[3],
+            endDate: task[4].toString(),
             isCompleted: task[5],
             isConfirmed: task[6],
             isInArbitration: task[7],
@@ -128,16 +131,18 @@ export async function callInitiateArbitration(taskId, arbiterAddress) {
  * Listen for "TaskCreated" event
  */
 export const listenTaskCreated = async (callback) => {
-    const contract = getContract();
-    contract.on("TaskCreated", (taskId, owner, description, budget, endDate) => {
+    const contract = await getContract();
+
+    await contract.on("TaskCreated", (taskId, owner, description, budget, endDate, event) => {
         const eventObject = {
             eventType: "TaskCreated",
             taskId: Number(taskId),
             owner,
             description,
-            budget: ethers.formatEther(budget),
-            endDate: new Date(Number(endDate) * 1000).toLocaleString(),
+            budget: budget,
+            endDate: endDate.toString(),
         };
+
         console.log("✅ Event detected:", eventObject);
         if (callback) callback(eventObject);
     });
@@ -147,13 +152,15 @@ export const listenTaskCreated = async (callback) => {
  * Listen for "TaskAssigned" event
  */
 export const listenTaskAssigned = async (callback) => {
-    const contract = getContract();
-    contract.on("TaskAssigned", (taskId, executor) => {
+    const contract = await getContract();
+
+    await contract.on("TaskAssigned", (taskId, executor, event) => {
         const eventObject = {
             eventType: "TaskAssigned",
             taskId: Number(taskId),
             executor,
         };
+
         console.log("✅ Event detected:", eventObject);
         if (callback) callback(eventObject);
     });
@@ -163,12 +170,14 @@ export const listenTaskAssigned = async (callback) => {
  * Listen for "TaskCompleted" event
  */
 export const listenTaskCompleted = async (callback) => {
-    const contract = getContract();
-    contract.on("TaskCompleted", (taskId) => {
+    const contract = await getContract();
+
+    await contract.on("TaskCompleted", (taskId, event) => {
         const eventObject = {
             eventType: "TaskCompleted",
             taskId: Number(taskId),
         };
+
         console.log("✅ Event detected:", eventObject);
         if (callback) callback(eventObject);
     });
@@ -178,13 +187,15 @@ export const listenTaskCompleted = async (callback) => {
  * Listen for "TaskConfirmed" event
  */
 export const listenTaskConfirmed = async (callback) => {
-    const contract = getContract();
-    contract.on("TaskConfirmed", (taskId, owner) => {
+    const contract = await getContract();
+
+    await contract.on("TaskConfirmed", (taskId, owner, event) => {
         const eventObject = {
             eventType: "TaskConfirmed",
             taskId: Number(taskId),
             confirmedBy: owner,
         };
+
         console.log("✅ Event detected:", eventObject);
         if (callback) callback(eventObject);
     });
@@ -194,13 +205,15 @@ export const listenTaskConfirmed = async (callback) => {
  * Listen for "ArbitrationInitiated" event
  */
 export const listenArbitrationInitiated = async (callback) => {
-    const contract = getContract();
-    contract.on("ArbitrationInitiated", (taskId, arbiter) => {
+    const contract = await getContract();
+
+    await contract.on("ArbitrationInitiated", (taskId, arbiter, event) => {
         const eventObject = {
             eventType: "ArbitrationInitiated",
             taskId: Number(taskId),
             arbiter,
         };
+
         console.log("✅ Event detected:", eventObject);
         if (callback) callback(eventObject);
     });
@@ -210,7 +223,8 @@ export const listenArbitrationInitiated = async (callback) => {
  * Function to remove all event listeners when needed
  */
 export const removeAllListeners = async () => {
-    const contract = getContract();
-    contract.removeAllListeners();
+    const contract = await getContract();
+
+    await contract.removeAllListeners();
     console.log("🚫 All event listeners removed.");
 };

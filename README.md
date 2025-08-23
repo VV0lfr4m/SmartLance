@@ -111,7 +111,7 @@ The platform consists of three components:
    mvn spring-boot:run
 
 5. **Start Frontend**   
-   npm start
+   npm run dev
 
 ## 🧪 Usage
 1. Connect Wallet

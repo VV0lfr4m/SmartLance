@@ -1,4 +1,5 @@
 import "../styles/TaskList.css";
+
 //todo add input field for arbiter address
 function TaskList({tasks, confirmTask, initiateDispute}) {
     return (
@@ -11,13 +12,9 @@ function TaskList({tasks, confirmTask, initiateDispute}) {
                         <p><strong>Deadline:</strong> {task.endDate || "N/A"}</p>
                         <p><strong>Status:</strong> {task.status || "N/A"}</p>
                         <p><strong>Review:</strong> {task.review || "No reviews yet"}</p>
-                        {task.status === "Wait for freelancer" && (
-                            <button onClick={() => confirmTask(task.id)}>Confirm task</button>
-                        )}
-                        {task.status === "On review" && (
+                        <button onClick={() => confirmTask(task.id)}>Confirm task</button>
+                        <button onClick={() => initiateDispute(task.id, "0x123")}>Initialize dispute</button>
 
-                            <button onClick={() => initiateDispute(task.id, "0x123")}>Initialize dispute</button>
-                        )}
                     </div>
                 ))
             ) : (

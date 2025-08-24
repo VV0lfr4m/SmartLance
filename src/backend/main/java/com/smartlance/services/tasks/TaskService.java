@@ -3,18 +3,20 @@ package com.smartlance.services.tasks;
 import com.smartlance.models.Task;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskService implements ITaskService {
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
     public Task createTask(Task task) {
+        //Mock non null params
         return taskRepository.save(task);
     }
 

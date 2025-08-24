@@ -15,6 +15,26 @@ export async function callCreateTask(task) {
             value: ethers.parseEther(task.budget)
         });
         await transaction.wait();
+
+        const [ownerAddress] = await window.ethereum.request({ method: "eth_accounts" });
+        const deadlineIso = new Date(date * 1000).toISOString().slice(0, 19);
+
+        const payload = {
+            description: task.description,
+            budget: task.budget,
+            deadline: deadlineIso ,
+            ownerAddress: ownerAddress || null
+        };
+
+        const backendResponse = await fetch("http://localhost:8080/tasks", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if (!backendResponse.ok) {
+            throw new Error("Failed to save task in DB");
+        }
+
         return transaction;
     } catch (error) {
         console.error("Error creating task:", error);
@@ -50,16 +70,18 @@ export async function callGetTask(taskId) {
         const contract = await getContract();
         const task = await contract.getTask(taskId);
         console.log(`callGetTask - ${task}`);
+        //mock status
         return {
             id: taskId,
             owner: task[0],
             executor: task[1],
             description: task[2],
             budget: task[3],
-            endDate: task[4].toString(),
+            endDate: new Date(Number(task[4]) * 1000).toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' }),
             isCompleted: task[5],
             isConfirmed: task[6],
             isInArbitration: task[7],
+            status:"New"
         };
     } catch (error) {
         console.error("Error fetching task:", error);
@@ -76,17 +98,25 @@ export async function callGetAllTasks() {
         const contract = await getContract();
         const tasksData = await contract.getAllTasks();
         console.log(`task data from get all tasks ${tasksData}`);
-        return tasksData.map((task, index) => ({
+        //mock status
+        const tasks = tasksData.map((task, index) => ({
             id: index,
             owner: task[0],
             executor: task[1],
             description: task[2],
             budget: task[3],
-            endDate: task[4].toString(),
+            endDate: new Date(Number(task[4]) * 1000).toLocaleDateString('uk-UA', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }),
             isCompleted: task[5],
             isConfirmed: task[6],
             isInArbitration: task[7],
+            status: "New"
         }));
+
+        return tasks.sort((a, b) => b.id - a.id);
     } catch (error) {
         console.error("Error fetching all tasks:", error);
         throw error;

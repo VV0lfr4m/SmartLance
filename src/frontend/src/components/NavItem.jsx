@@ -1,5 +1,12 @@
+import { HashLink } from 'react-router-hash-link';
+
+
 function NavItem({ href, text, className }) {
-    return <a href={href} className={className}>{text}</a>;
+    return (
+        <HashLink smooth to={href} className={className}>
+            {text}
+        </HashLink>
+    );
 }
 
 export default NavItem;

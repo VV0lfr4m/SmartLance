@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import {useEffect, useState, useRef, useCallback} from "react";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
 import * as TaskManagerUtils from "../contracts/utils/TaskManagerUtils";
@@ -9,15 +9,15 @@ function EmployerPage() {
     const isListenerAdded = useRef(false); // ✅ Prevents duplicate event listeners
 
     // ✅ Fetch all tasks once on mount
-    const fetchTasks = async () => {
+    const fetchTasks = useCallback(async () => {
         try {
-            console.log("📢 Fetching all tasks..."); // ✅ Logs only once
+            console.log("📢 Fetching all tasks...");
             const response = await TaskManagerUtils.callGetAllTasks();
             setTasks(response);
         } catch (err) {
             console.error(err);
         }
-    };
+    }, []);
 
     useEffect(() => {
         if (isMounted.current) return; // ✅ Prevent second execution in Strict Mode
@@ -73,8 +73,8 @@ function EmployerPage() {
 
     return (
         <div>
-            <TaskForm />
-            <TaskList tasks={tasks} confirmTask={confirmTask} initiateDispute={initiateDispute} />
+            <TaskForm onCreated={fetchTasks} />
+            <TaskList tasks={tasks} onCreated={fetchTasks} confirmTask={confirmTask} initiateDispute={initiateDispute} />
         </div>
     );
 }

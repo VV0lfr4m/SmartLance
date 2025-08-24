@@ -9,12 +9,12 @@ import {ethers} from "ethers";
 export async function callCreateTask(task) {
     try {
         const contract = await getContract();
-        const date = Math.floor(new Date(task.endDate).getTime() / 1000);
+        const date = Math.floor(new Date(task.endDate + "T00:00:00Z").getTime() / 1000);
         console.log(`task descr - ${task.description} task budget - ${task.budget} task date ${date}`)
         const transaction = await contract.createTask(task.description, task.budget, date, {
             value: ethers.parseEther(task.budget)
         });
-        await transaction.wait();
+        const receipt = await transaction.wait();
 
         const [ownerAddress] = await window.ethereum.request({ method: "eth_accounts" });
         const deadlineIso = new Date(date * 1000).toISOString().slice(0, 19);
@@ -35,7 +35,7 @@ export async function callCreateTask(task) {
             throw new Error("Failed to save task in DB");
         }
 
-        return transaction;
+        return receipt;
     } catch (error) {
         console.error("Error creating task:", error);
         throw error;

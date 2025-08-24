@@ -4,7 +4,7 @@ import "../styles/TaskForm.css";
 import * as TaskManagerUtils from "../contracts/utils/TaskManagerUtils";
 
 
-function TaskForm() {
+function TaskForm({ onCreated }) {
     const [loading, setLoading] = useState(false);
     const [task, setTask] = useState({
         id: "",
@@ -31,6 +31,13 @@ function TaskForm() {
             setLoading(true);
             const transaction = await TaskManagerUtils.callCreateTask(task);
             console.log(transaction);
+
+            if (transaction?.wait) {
+                await transaction.wait();
+            }
+
+            onCreated?.();
+
             setTask({
                 id: "",
                 owner: "",
@@ -44,7 +51,7 @@ function TaskForm() {
             });
             alert("Task is created!");
         }catch (err) {
-            console.error("Transaction failed:", error);
+            console.error("Transaction failed:", err);
             alert("Transaction failed ❌");
         }finally {
             setLoading(false);
@@ -58,7 +65,8 @@ function TaskForm() {
                 <label htmlFor ="budget"></label>
                 <input type="number" name = "budget" placeholder="Budget (ETH)" value={task.budget} onChange={handleChange} required/>
                 <label htmlFor ="endDate"></label>
-                <input type="text" name = "endDate" placeholder="Deadline (dd-mm-yyyy)" value={task.endDate} onChange={handleChange} required/>
+                <input id="endDate" type="date" name = "endDate" placeholder="Deadline (dd-mm-yyyy)" value={task.endDate} onChange={handleChange} onClick={(e) => e.target.showPicker?.()}
+                       onFocus={(e) => e.target.showPicker?.()} required/>
                 <Button text={loading ? "Publishing..." : "Publish the task"} disabled={loading} className={`submit-button ${loading ? "disabled" : ""}`}/>
             </form>
     );

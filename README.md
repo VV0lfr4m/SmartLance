@@ -47,6 +47,8 @@ This is a decentralized platform for managing freelance tasks. The platform allo
   1) Send `createTask(description, budgetWei, endDate)` to the smart contract and wait for confirmation.  
   2) After `tx.wait()`, persist the task in the backend (Spring) via `/tasks` with `ownerAddress`, `description`, `budget`, and `deadline`.
 - **Task List** — view all created tasks (budget in ETH, deadline formatted as `DD.MM.YYYY`).
+  
+**Demo video link** - https://www.dropbox.com/scl/fi/9h25w479czievko5zm7qh/Recording-2025-08-24-132505.mp4?rlkey=ewq4mh5bszwvf453m7ijctv39&st=tmjy5yoa&dl=0
 
 ## Next Steps
 

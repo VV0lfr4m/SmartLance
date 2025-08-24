@@ -37,6 +37,26 @@ This is a decentralized platform for managing freelance tasks. The platform allo
 
 ---
 
+## ✅ End-to-End Ready Functionality
+
+- **Smart contract deployment** - сurrently running on local Hardhat network.
+- **Wallet Connect (MetaMask)** — connect/disconnect flow with `eth_accounts` check, guarded `eth_requestAccounts` (prevents `-32002` duplicates), and `accountsChanged` listener.
+- **Landing Page** — public overview of the platform.
+- **Employer Page** — interface for employers to manage tasks. (UI in dev form :))
+- **Task Creation (on-chain + DB syncronization)**  
+  1) Send `createTask(description, budgetWei, endDate)` to the smart contract and wait for confirmation.  
+  2) After `tx.wait()`, persist the task in the backend (Spring) via `/tasks` with `ownerAddress`, `description`, `budget`, and `deadline`.
+- **Task List** — view all created tasks (budget in ETH, deadline formatted as `DD.MM.YYYY`).
+
+## Next Steps
+
+- [ ] **Assign executor** — link an executor to a task (on-chain event + DB sync).
+- [ ] **Task completion (both parties)** — executor marks done → employer confirms or opens a dispute.
+- [ ] **Sepolia testnet deployment**
+
+
+---
+
 ## 🏗️ Architecture
 
 The platform consists of three components:
@@ -45,6 +65,7 @@ The platform consists of three components:
 - Written in **Solidity**
 - Deployed on **Ethereum-compatible testnets** (e.g., Goerli, Hardhat local)
 - Manages task lifecycle: create → assign → complete
+- Emitting Events
 
 ### 2. Backend
 - Built with **Spring Boot**
@@ -52,8 +73,8 @@ The platform consists of three components:
 - Validates and orchestrates data flow
 
 ### 3. Frontend
-- Built with **React**
-- Offers a clean, intuitive interface for users
+- Built with **React** and **Vite**
+- Offers a clean, modern, intuitive interface for users
 
 ---
 
@@ -75,6 +96,7 @@ The platform consists of three components:
 - Node.js
 - Hardhat
 - Metamask
+- H2 in-memory DB
 
 ---
 

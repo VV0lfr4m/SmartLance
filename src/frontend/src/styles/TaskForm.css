@@ -16,9 +16,11 @@
 /* Form Styling */
 .create-task-form {
     width: 100%;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin: 0 auto;
 }
 
 /* Labels */

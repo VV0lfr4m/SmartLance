@@ -58,7 +58,7 @@ function TaskForm() {
                 <label htmlFor ="budget"></label>
                 <input type="number" name = "budget" placeholder="Budget (ETH)" value={task.budget} onChange={handleChange} required/>
                 <label htmlFor ="endDate"></label>
-                <input type="text" name = "endDate" placeholder="Deadline" value={task.endDate} onChange={handleChange} required/>
+                <input type="text" name = "endDate" placeholder="Deadline (dd-mm-yyyy)" value={task.endDate} onChange={handleChange} required/>
                 <Button text={loading ? "Publishing..." : "Publish the task"} disabled={loading} className={`submit-button ${loading ? "disabled" : ""}`}/>
             </form>
     );
